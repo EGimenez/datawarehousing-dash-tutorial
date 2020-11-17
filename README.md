@@ -3,9 +3,9 @@
 
 This tutorial will get you up and running with Dash, a Python framework for dashboards built by the folks at Plotly.
 
-Our goal will be to create a dashboard on top of the Postgres data warehouse we built in the [analytics-databases]() module. We will build a dashboard that views some basic statistics from that database.
+Our goal will be to create a dashboard on top of the Postgres data warehouse storing our favorite data from Foos Models. We will build a dashboard that views some basic statistics from that database.
 
-## Installation and Styling Basics
+## Installation
 
 First you will need to create a new folder and create a virtual environment:
 
@@ -18,7 +18,7 @@ python3 -m venv venv && source venv/bin/activate
 Now install the following libraries:
 
 ``` shell
-nnnnpip install dash==1.6.1 dash-daq==0.3.1 pandas psycopg2-binary records
+pip install dash==1.17.0 dash_daq pandas psycopg2-binary records
 ```
 
 And create an `app.py` file in the root of the project with the following code:
@@ -40,7 +40,17 @@ app.run_server(debug=True)
 
 Try running it with `python app.py` and opening your browser to http://localhost:8050.
 
-You should be able to see your dashboard! Try changing the text in the Python file and saving. You don't need to stop/start the Python process, it auto-reloads the file! You should see the changes reflected in your browser. Try adding other HTML elements (P, A, etc.) and try inspecting the html in your browser too to see what changes.
+You should be able to see your dashboard! Try changing the text in the Python file and saving. You don't need to stop/start the Python process, it auto-reloads the file! You should see the changes reflected in your browser.
+
+## HTML and Styling Basics
+
+Open up the inspector in your browser (usually `CTRL+SHIFT+I`) and then may need to additionally select the "inspector" window.
+
+![Showing the inspector](inspector.gif)
+
+You will be able to view the HTML that you created. Remember, HTML is a tree and each node is an HTML _element_. HTML elements are defined by "opening tags" and "closing tags"
+
+Try adding new HTML elements in dash (`html.P`) and try inspecting the html in your browser too to see what changes.
 
 Great, now let's make it look a bit better with CSS. First we create an `assets` folder, which Dash will automagically include for us. Next, we add a "CSS reset", which just makes CSS a little easier to work with by getting rid of defaults:
 
@@ -51,9 +61,9 @@ touch main.css
 wget -O _reset.css https://meyerweb.com/eric/tools/css/reset/reset.css
 ```
 
-Take a look at the page, you should notice a slight difference in spacing!
+Take a look at the page, you should notice all the default styling has dissapeared! This gives us a "blank slate" to start from and can make it easier for you to reason about what is happening with the styling.
 
-Now let's add some styling, modify the `main.css` file to look like:
+Now, let's style. Modify the `main.css` file to look like:
 
 
 ``` css
@@ -74,7 +84,7 @@ There are two steps to changing the font. The first is loading it (from Google, 
 
 Try to change the font! Take a look at Google Fonts and find one you like.
 
-Now, let's make a "container" which will hold most of the content of our dashboard:
+Note that if we look at the HTML in our inspector, we see that both the H1 and the H4 elements we created are within a div element with the class "layout". We can style that div element with the following CSS:
 
 ``` css
 .layout {
@@ -84,9 +94,11 @@ Now, let's make a "container" which will hold most of the content of our dashboa
 }
 ```
 
+Where the `.layout` tells the browser to apply that set of styles to "any element with the class 'layout'".
+
 Try changing the width of your browser, see what happens.
 
-Next, let's try and give the title a bit of breathing room. To do that, let's add a className to the H1 element:
+Next, let's try and give the title a bit of breathing room. To do that, let's add a class to the H1 element with the `className` parameter:
 
 ``` python
     html.H1(className = 'title', children = 'Classic Models Dashboard'),
@@ -101,7 +113,7 @@ Now we can attach a style to that element by using the class. Write this in your
 }
 ```
 
-That should feel a bit better.
+That should feel a bit better. You should feel free to play around CSS, it's pretty easy! That being said, it can also get pretty frustrating, so don't lose too much time on fancy styling. You can find a [good tutorial from Mozilla here](https://developer.mozilla.org/en-US/docs/Learn/CSS).
 
 ## Components and Plots
 
@@ -115,7 +127,7 @@ The main functionality of Dash comes from these components. You can take a look 
 
 Previously, we just used plain-jane HTML components (H1, Div), but the dash_core_components are supercharged with functionality we will want. These components consist of items on the page that we either want the user to interact with or that we want to display data.
 
-Let's start by adding a `Graph` to our layout. Add this:
+Let's start by adding a `Graph` to our layout. Add this to the `children` parameter of the `app.layout`:
 
 ``` python
 dcc.Graph(id='timeline', figure={})
