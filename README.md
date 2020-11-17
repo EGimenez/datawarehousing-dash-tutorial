@@ -3,6 +3,8 @@
 
 This tutorial will get you up and running with Dash, a Python framework for dashboards built by the folks at Plotly.
 
+It's worth noting, that if you don't like this tutorial I made, you can always follow the [official tutorial in the Dash documentation](https://dash.plotly.com/) instead!
+
 Our goal will be to create a dashboard on top of the Postgres data warehouse storing our favorite data from Foos Models. We will build a dashboard that views some basic statistics from that database.
 
 ## Installation
