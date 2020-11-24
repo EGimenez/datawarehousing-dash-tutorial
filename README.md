@@ -496,6 +496,8 @@ def timeline(boxes, time_range):
 Take a look at what it prints, when you move the slider around! You can use the `fromtimestamp` method on `datetime` to get it back to a datetime object:
 
 ``` python
+from datetime import timezone
+
 @app.callback(
     Output('timeline', 'figure'),
     [Input('country-checkbox', 'value'),
